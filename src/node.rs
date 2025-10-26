@@ -1,6 +1,5 @@
-
 pub mod node{
-    use std::fmt::Display;
+    use std::fmt::{format, Display};
 
     pub struct Node<T : Display>{
         pub val : Option<T>,
@@ -41,20 +40,24 @@ pub mod node{
 
         }
 
-        pub fn apply_pre_order_mut<F>(mut self, f : &F) where F : FnMut(&Node<T>) + Fn(&Node<T>) {
+        pub fn to_string(self)-> String{
 
-            f(&mut self);
+            let left_res = match self.left{
+                Some(lft) => lft.to_string(),
+                None => String::from("None")
+            };
 
-            match self.left{
-                Some(left) => left.apply_pre_order(f),
-                None => {},
-            }
+            let right_res = match self.right{
+                Some(rgt) => rgt.to_string(),
+                None => String::from("None")
+            };
 
-            match self.right{
-                Some(right) => right.apply_pre_order(f),
-                None => {},
-            }
+            let self_val = match self.val{
+                Some(val) => format!("{}", val),
+                None => String::from("None")
+            };
 
+            return format!("({}, {}, {})", self_val, left_res, right_res);
         }
 
     }
