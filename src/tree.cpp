@@ -43,7 +43,16 @@ namespace tree {
       }
 
       std::unordered_map<char, std::vector<bool>> get_dict(){
-        return this->bin2char(this->root);
+
+        auto b2c = this->bin2char(this->root);
+
+        for(auto& p : b2c){
+
+          std::reverse(p.second.begin(), p.second.end());
+
+        }
+
+        return b2c;
       }
 
       void print(){ this->root->print(); }

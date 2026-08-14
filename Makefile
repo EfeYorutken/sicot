@@ -2,5 +2,6 @@ build:
 	g++ -o sicot -std=c++23 src/main.cpp
 
 test:
-	echo 'test not implemented yet'
-
+	g++ -o temp -std=c++23 test.cpp
+	./temp
+	rm temp

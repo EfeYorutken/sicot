@@ -3,13 +3,15 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
-#include <iostream>
+
 #include <print>
 
 namespace huffman {
 
   std::pair<std::unordered_map<std::vector<bool>, char>, std::vector<bool>>
     encode(std::string str){ 
+
+      if(str.length() == 0){ return {{}, {}}; }
 
       tree::Tree tree;
       std::vector<char> chars;
@@ -24,12 +26,11 @@ namespace huffman {
 
       std::sort( chars.begin(), chars.end(), sorter );
 
-
       char current_char = chars.back();
       chars.pop_back();
       tree = tree::Tree(current_char);
 
-      while(chars.size() > 0){
+      while(chars.size() > 1){
         char current_char = chars.back();
         chars.pop_back();
 
@@ -43,6 +44,7 @@ namespace huffman {
 
       for(char c : str){
         auto encoding = dict[c];
+        std::print("pushing {}\n", encoding );
         encoded.insert(encoded.end(), encoding.begin(), encoding.end());
       }
 
@@ -51,6 +53,8 @@ namespace huffman {
 
   std::string
     decode(std::unordered_map<std::vector<bool>, char> dict, std::vector<bool> encoded){
+
+      if(encoded.empty()){ return ""; }
 
       std::vector<bool> temp;
       std::string res;
@@ -64,6 +68,8 @@ namespace huffman {
         }
 
       }
+
+      res += dict[temp];
 
       return res;
     }

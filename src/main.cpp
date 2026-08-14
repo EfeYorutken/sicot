@@ -9,7 +9,7 @@ int main(){
 
   std::unordered_map<std::vector<bool>, char> dict;
   std::vector<bool> encoding;
-  std::string test = "hello there-general kenobi!!";
+  std::string test = "aaabbc";
 
   std::pair<decltype(dict), decltype(encoding)> pair = huffman::encode(test);
 
@@ -22,10 +22,6 @@ int main(){
   }
 
   cout << endl;
-
-  for(auto a : dict){
-    std::print("{} => {}\n", a.first, a.second);
-  }
 
   cout << "----------" << endl;
 
