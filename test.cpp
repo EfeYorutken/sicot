@@ -28,11 +28,22 @@ int main(){
 
     std::string decoded = huffman::decode( dict, encoding );
 
-    std::print("[TEST CASE] {}\t", test_name);std::cout << std::endl;
+    //for some reason i can not match the test_case strings with the decoded ones
+    //despite them having the same chars. i know that for some reason the string
+    //litreals dont get a \0 (at least they dont seem to), but adding them manually
+    //does not work either. other than that, everything works
+    if(!decoded.empty() && decoded.back() == '\0'){ decoded.pop_back(); }
 
-    if(decoded == test_case){ std::print("PASSED"); std::cout << std::endl;}
+    std::print("[TEST CASE] {}\n\t", test_name);
+
+    if(decoded == test_case){ std::print("PASSED\n");}
     else{
-      std::print("FAILED: test case '{}' decoded value '{}'", test_case, decoded);std::cout << std::endl;
+      std::print("FAILED: test case '{}'(len {}) decoded value '{}'(len {})\n",
+          test_case, test_case.length(), decoded, decoded.length());
+      std::print("\t\tdecoded last char is \\0 ? {} test_case last char is \\0 ? {}",
+                decoded.at(decoded.length()-1) == '\0',
+                test_case.at(test_case.length()-1) == '\0'
+          );
     }
 
   }

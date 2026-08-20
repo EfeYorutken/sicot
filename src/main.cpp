@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int main(){
+int main(int argc, char** argv){
 
   std::unordered_map<std::vector<bool>, char> dict;
   std::vector<bool> encoding;

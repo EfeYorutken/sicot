@@ -9,46 +9,44 @@
 namespace huffman {
 
   std::pair<std::unordered_map<std::vector<bool>, char>, std::vector<bool>>
-    encode(std::string str){ 
+    encode(std::string str){
 
-      if(str.length() == 0){ return {{}, {}}; }
+      if(str.length() == 0){ return { {},{} }; }
 
-      tree::Tree tree;
-      std::vector<char> chars;
+      std::unordered_map<std::vector<bool>, char> dict;
+      std::unordered_map< char,std::vector<bool>> encode_dict;
       std::vector<bool> encoded;
-      std::unordered_map<std::vector<bool>, char> decoding_dict;
+      tree::Tree local_tree;
+
       std::unordered_map<char, int> freqs;
-      auto sorter = [&freqs](char a, char b){ return freqs[a] > freqs[b]; };
+      std::vector<char> chars;
 
       for(char c : str){ freqs[c]++; }
-
       for(auto p : freqs){ chars.push_back(p.first); }
 
-      std::sort( chars.begin(), chars.end(), sorter );
+      std::sort(chars.begin(), chars.end(),
+          [&freqs](char a, char b){ return freqs[a] > freqs[b]; }
+          );
 
-      char current_char = chars.back();
+      local_tree = tree::Tree( chars.back() );
       chars.pop_back();
-      tree = tree::Tree(current_char);
 
-      while(chars.size() > 1){
-        char current_char = chars.back();
+      while(chars.size() > 0){
+        local_tree.join(chars.back());
         chars.pop_back();
-
-        tree.join(current_char);
       }
 
-      std::unordered_map<char, std::vector<bool>> dict = tree.get_dict();
-      decoding_dict.reserve(dict.size());
-
-      for(auto p : dict){ decoding_dict[p.second] = p.first; }
+      encode_dict = local_tree.get_dict();
 
       for(char c : str){
-        auto encoding = dict[c];
-        std::print("pushing {}\n", encoding );
-        encoded.insert(encoded.end(), encoding.begin(), encoding.end());
+
+        auto p = encode_dict[c];
+
+        dict[p] = c;
+        encoded.insert(encoded.end(), p.begin(), p.end());
       }
 
-      return {decoding_dict, encoded};
+      return { dict, encoded };
     }
 
   std::string
